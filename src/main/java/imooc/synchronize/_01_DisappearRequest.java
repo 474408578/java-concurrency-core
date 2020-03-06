@@ -26,6 +26,6 @@ public class _01_DisappearRequest implements Runnable {
         t1.join();
         t2.join();
 
-        System.out.println(i);
+        System.out.println(i);// 结果小于200000 可见性
     }
 }
