@@ -29,3 +29,44 @@ public class _01_DisappearRequest implements Runnable {
         System.out.println(i);// 结果小于200000 可见性
     }
 }
+/*
+解决方法
+1、在run方法中加synchronized关键字
+public synchronized void run() {
+    for (int j = 0; j < 100000; j++) {
+        i++;
+    }
+}
+
+
+2、使用对象锁的代码块形式
+ public void run() {
+     synchronized (this) {
+         for (int j = 0; j < 100000; j++) {
+            i++;
+         }
+     }
+ }
+
+3、类锁的*.class形式
+public void run() {
+        synchronized (_01_DisappearRequest.class) {
+            for (int j = 0; j < 100000; j++) {
+                i++;
+            }
+        }
+    }
+
+4、类锁的static形式
+对于run方法不可以使用static，如果是我们实现的普通方法，则可以使用static，封装一下就可以了。
+    public void run() {
+        add();
+    }
+
+    public static synchronized void add() {
+        for (int j = 0; j < 100000; j++) {
+            i++;
+        }
+    }
+
+*/

@@ -1,13 +1,14 @@
-package atguigu.juc.lock8;
-
+package atguigu.juc._06_lock8;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * 4、两部手机，请问先打印邮件还是短信？
+ * 7、一个普通同步方法，1个静态同步方法，1部手机，请问先打印邮件还是短信？
+ * 先打印邮件。加锁的对象不一样，互不影响
  */
-class Phone4 {
-    public synchronized void sendEmail() throws InterruptedException {
+class Phone7 {
+    public static synchronized void sendEmail() throws InterruptedException {
+        System.out.println("sendEmail");
         // 休眠4秒钟
         TimeUnit.SECONDS.sleep(4);
         System.out.println(Thread.currentThread().getName() + "-----sendEmail");
@@ -23,14 +24,12 @@ class Phone4 {
     }
 }
 
-public class _04_Lock {
+public class _07_Lock {
     public static void main(String[] args) throws InterruptedException {
-        Phone4 phone4_1 = new Phone4();
-        Phone4 phone4_2 = new Phone4();
-
+        Phone7 phone7 = new Phone7();
         new Thread(() -> {
             try {
-                phone4_1.sendEmail();
+                phone7.sendEmail();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -39,7 +38,7 @@ public class _04_Lock {
         Thread.sleep(100);
 
         new Thread(() -> {
-            phone4_2.sendSMS();
+            phone7.sendSMS();
         }, "B").start();
     }
 }
