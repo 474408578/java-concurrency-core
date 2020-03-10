@@ -10,6 +10,8 @@ import java.util.concurrent.BlockingQueue;
  * 此例中，生产者的生产速度很快，消费者消费速度很慢，所以阻塞队列满了以后，
  * 生产者会阻塞，等待消费者进一步消费
  *
+ * 错误原因：线程阻塞到了storage.put(num)这句代码上
+ *
  */
 public class WrongWayVolatileCantStop {
     public static void main(String[] args) throws InterruptedException {
@@ -45,11 +47,11 @@ class Producer implements Runnable {
         try {
             while (!canceled && num <= 1000000) {
                 if (num % 100 == 0) {
+                    // 导致线程阻塞，不能被中断，while条件无效
                     storage.put(num);
                     System.out.println(num + "已经被放入仓库了");
                 }
                 num++;
-                Thread.sleep(1);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
