@@ -21,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * 知识点：
  *      1、UUID
- *      2、System.currentTimeMillis()
+ *      2、System.()
  */
 /*
 写时复制
@@ -29,16 +29,17 @@ CopyOnWrite容器，即写时复制容器，在一个容器添加元素的时候
 而是现将当前容器的Object[]进行copy，复制出一个新的容器Object[] newElements,
 然后在新的容器Object[] newElements里添加元素，添加完元素之后，再将原容器的引用指向新容器---setArray(newElements)。
 这样做的好处是可以对CopyOnWrite容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素，
-所以CopyOnWrite容器也是一种读写分离分离的思想，读和写不同的容器。
-
+所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器。
 
 
 public boolean add(E e) {
         final ReentrantLock lock = this.lock;
+        // 加锁
         lock.lock();
         try {
             Object[] elements = getArray();
             int len = elements.length;
+            // 复制
             Object[] newElements = Arrays.copyOf(elements, len + 1);
             newElements[len] = e;
             setArray(newElements);
