@@ -68,6 +68,8 @@ git push
 ### 7、分支（branch）
 在数据库进行最初的提交后, Git会创建一个名为master的分支。因此之后的提交，在切换分支之前都会添加到master分支里。
 
-
+git branch <branchName>  # 创建到branchName分支
+git checkout branchName  # 切换到分支branchName中去
+git branch  # 查看分支列表
 
 
