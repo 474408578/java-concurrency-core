@@ -44,6 +44,7 @@ public class WrongWayVolatileFixed {
                         // 导致线程阻塞，不能被中断，while条件无效
                         storage.put(num);
                         System.out.println(num + "已经被放入仓库了");
+                        Thread.sleep(1);
                     }
                     num++;
                 }

@@ -51,6 +51,8 @@ class Producer implements Runnable {
                     storage.put(num);
                     System.out.println(num + "已经被放入仓库了");
                 }
+                // 使用sleep()后会自动退出，因为sleep后，会改变线程标志位
+                // Thread.sleep(1);
                 num++;
             }
         } catch (InterruptedException e) {
