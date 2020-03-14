@@ -1,7 +1,7 @@
 package imooc.threadcoreknowledge.sixstates;
 
 public class NewRunnableTerminated implements Runnable{
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Thread thread = new Thread(new NewRunnableTerminated());
         //打印出NEW的状态
         System.out.println(thread.getState());
@@ -20,6 +20,7 @@ public class NewRunnableTerminated implements Runnable{
             e.printStackTrace();
         }
         //打印出TERMINATED状态
+        thread.join();
         System.out.println(thread.getState());
     }
 
