@@ -43,6 +43,19 @@ Thread类本身不适合作为锁对象，Thread类在线程退出的时候会�
 #### 8、用suspend()和resume()来阻塞线程可以吗？为什么？
 不推荐使用，由于安全问题已经被弃用了。
 
+#### 9、wait/notify,sleep的异同（可以从属于哪个对象，线程状态怎么切换来回答）
+相同点：
+* 阻塞
+* 相应中断
+
+不同点：
+* wait/notify必须在同步方法中去执行【保证线程更加安全，防止死锁和永久等待】
+* 释放锁（sleep不释放锁，wait会释放锁）
+* sleep必须传参
+* 所属类不一样（sleep是Thread类，wait/notify是object对象）【Java对象设计是每一个类都是一把锁，他的对象头中有几位用来保存monitor】
+
+
+
 ### 3、Java相关概念
 ##### 1、JavaSE， JavaEE，JavaME是什么？
 关注JavaSE即可
