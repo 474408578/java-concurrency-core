@@ -71,7 +71,6 @@ public class _15_BlockingQueueDemo {
         // 队列满后，3秒钟返回false
         System.out.println(blockingQueue.offer("a", 3L, TimeUnit.SECONDS));
 
-
     }
 
 
