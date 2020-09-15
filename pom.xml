@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Java-concurrentcy_core</groupId>
-    <artifactId>Java-concurrentcy_core</artifactId>
+    <artifactId>Java-concurrentcy-core</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <build>
