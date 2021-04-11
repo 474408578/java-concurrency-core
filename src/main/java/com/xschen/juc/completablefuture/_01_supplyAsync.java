@@ -3,12 +3,18 @@ package com.xschen.juc.completablefuture;
 import com.xschen.utils.SmallTool;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 /**
  * 演示 supplyAsync 用法
  * @author xschen
+ * 创建一个CompletableFuture 对象: 开启一个异步任务
  * @see CompletableFuture#supplyAsync(Supplier)
+ * @see CompletableFuture#supplyAsync(Supplier, Executor)
+ *
+ * @see CompletableFuture#runAsync(Runnable)
+ * @see CompletableFuture#runAsync(Runnable, Executor)
  */
 public class _01_supplyAsync {
 
