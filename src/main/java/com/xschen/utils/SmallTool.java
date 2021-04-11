@@ -1,6 +1,11 @@
 package com.xschen.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.StringJoiner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class SmallTool {
+
+    private static Logger logger = LoggerFactory.getLogger(SmallTool.class);
 
     public static void sleepMillis(long millis) {
         try {
@@ -28,6 +35,16 @@ public class SmallTool {
                 .toString();
 
         System.out.println(result);
+    }
+
+    public static void printThreadPoolStat(ThreadPoolExecutor threadPool) {
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            logger.info("PoolSize: {}", threadPool.getPoolSize());
+            logger.info("Active Threads: {}", threadPool.getActiveCount());
+            logger.info("Number of Tasks completed: {}", threadPool.getCompletedTaskCount());
+            logger.info("Number of Tasks in Queue: {}", threadPool.getQueue().size());
+            logger.info("============================================");
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
 }
