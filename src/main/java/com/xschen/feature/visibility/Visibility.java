@@ -2,7 +2,7 @@ package com.xschen.feature.visibility;
 
 
 import com.xschen.juc.threadpool.ThreadPoolBuilder;
-import com.xschen.utils.SmallTool;
+import com.xschen.utils.ThreadUtil;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -31,7 +31,7 @@ public class Visibility {
         }).start();
 
 
-        SmallTool.sleepMillis(1000L);
+        ThreadUtil.sleepMillis(1000L);
         flag = false;
     }
 

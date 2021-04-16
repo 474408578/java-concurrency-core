@@ -1,6 +1,6 @@
 package com.xschen.juc.completablefuture;
 
-import com.xschen.utils.SmallTool;
+import com.xschen.utils.ThreadUtil;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -25,19 +25,19 @@ public class _06_exceptionally {
 
     public static void main(String[] args) {
 
-        SmallTool.printTimeAndThread("小白走出餐厅，来到公交站");
-        SmallTool.printTimeAndThread("等待 700路 或者 800路 公交到来");
+        ThreadUtil.printTimeAndThread("小白走出餐厅，来到公交站");
+        ThreadUtil.printTimeAndThread("等待 700路 或者 800路 公交到来");
 
         CompletableFuture<String> bus700 = CompletableFuture.supplyAsync(() -> {
-            SmallTool.printTimeAndThread("700路公交正在赶来");
-            SmallTool.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("700路公交正在赶来");
+            ThreadUtil.sleepMillis(100);
             throw new RuntimeException("撞树上了");
             //return "700路到了";
         });
 
         CompletableFuture<String> bus800 = CompletableFuture.supplyAsync(() -> {
-            SmallTool.printTimeAndThread("800路公交正在赶来");
-            SmallTool.sleepMillis(200);
+            ThreadUtil.printTimeAndThread("800路公交正在赶来");
+            ThreadUtil.sleepMillis(200);
             return "800路到了";
         });
 
@@ -47,12 +47,12 @@ public class _06_exceptionally {
             }
             return firstComeBus;
         }).exceptionally(e -> {
-            SmallTool.printTimeAndThread(e.getMessage());
-            SmallTool.printTimeAndThread("小白叫出租车");
+            ThreadUtil.printTimeAndThread(e.getMessage());
+            ThreadUtil.printTimeAndThread("小白叫出租车");
             return "出租车 叫到了";
         });
 
-        SmallTool.printTimeAndThread(String.format("%s,小白坐车回家", cf.join()));
+        ThreadUtil.printTimeAndThread(String.format("%s,小白坐车回家", cf.join()));
 
     }
 }

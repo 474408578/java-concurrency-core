@@ -1,6 +1,6 @@
 package com.xschen.feature.volatilecase;
 
-import com.xschen.utils.SmallTool;
+import com.xschen.utils.ThreadUtil;
 
 /**
  * volatile 保证可见性
@@ -18,7 +18,7 @@ public class VolatileVisibility {
             System.out.println(Thread.currentThread().getName() + "stopped");
         });
 
-        SmallTool.sleepMillis(1000);
+        ThreadUtil.sleepMillis(1000);
         flag = false;
     }
 }

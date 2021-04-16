@@ -7,7 +7,7 @@ package com.xschen.juc.synchronizedcase;
 public class SynchronizedNoRelation {
 
     /**
-     * 保护账户余额的锁
+     * 保护账户余额的锁, 锁需要设置为不可变对象
      */
     private final Object balanceLock = new Object();
 

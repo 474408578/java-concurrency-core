@@ -14,16 +14,33 @@ import java.util.concurrent.TimeUnit;
  */
 
 
-public class SmallTool {
+public class ThreadUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(SmallTool.class);
+    private static Logger logger = LoggerFactory.getLogger(ThreadUtil.class);
 
-    public static void sleepMillis(long millis) {
+    /**
+     * sleep 等待，单位为 毫秒，已捕捉异常
+     * @param durationMillis
+     */
+    public static void sleepMillis(long durationMillis) {
         try {
-            TimeUnit.MILLISECONDS.sleep(millis);
+            TimeUnit.MILLISECONDS.sleep(durationMillis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            /**
+             *  将线程中断标志位置为true
+             */
+            Thread.currentThread().interrupt();
         }
+    }
+
+    /**
+     * sleep 等待，单位自己设置，已捕捉异常
+     * @param duration
+     * @param unit
+     */
+    public static void sleep(long duration, TimeUnit unit) {
+        long millis = unit.toMillis(duration);
+        sleepMillis(millis);
     }
 
     public static void printTimeAndThread(String tag) {
@@ -45,6 +62,13 @@ public class SmallTool {
             logger.info("Number of Tasks in Queue: {}", threadPool.getQueue().size());
             logger.info("============================================");
         }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 纯粹为了提醒下处理InterruptedException的正确方式，除非你是在写不可中断的任务.
+     */
+    public static void handleInterruptedException() {
+        Thread.currentThread().interrupt();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.xschen.juc.completablefuture;
 
-import com.xschen.utils.SmallTool;
+import com.xschen.utils.ThreadUtil;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,22 +18,22 @@ public class FireWaterMakeTea {
          * 任务1：洗水壶 -> 烧开水
          */
         CompletableFuture<Void> cf1 = CompletableFuture.runAsync(() -> {
-            SmallTool.printTimeAndThread("洗水壶");
-            SmallTool.sleepMillis(100);
-            SmallTool.printTimeAndThread("烧开水");
-            SmallTool.sleepMillis(1500);
+            ThreadUtil.printTimeAndThread("洗水壶");
+            ThreadUtil.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("烧开水");
+            ThreadUtil.sleepMillis(1500);
         });
 
         /**
          * 任务2：洗茶壶 -> 洗茶杯 -> 拿茶叶
          */
         CompletableFuture<String> cf2 = CompletableFuture.supplyAsync(() -> {
-            SmallTool.printTimeAndThread("洗茶壶");
-            SmallTool.sleepMillis(100);
-            SmallTool.printTimeAndThread("洗茶杯");
-            SmallTool.sleepMillis(200);
-            SmallTool.printTimeAndThread("拿茶叶");
-            SmallTool.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("洗茶壶");
+            ThreadUtil.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("洗茶杯");
+            ThreadUtil.sleepMillis(200);
+            ThreadUtil.printTimeAndThread("拿茶叶");
+            ThreadUtil.sleepMillis(100);
             return "龙井";
         });
 
@@ -42,11 +42,11 @@ public class FireWaterMakeTea {
          * 任务3：泡茶
          */
         CompletableFuture<String> f3 = cf1.thenCombine(cf2, (__, tf) -> {
-            SmallTool.printTimeAndThread(String.format("拿到茶叶： %s", tf));
-            SmallTool.printTimeAndThread("泡茶 ");
+            ThreadUtil.printTimeAndThread(String.format("拿到茶叶： %s", tf));
+            ThreadUtil.printTimeAndThread("泡茶 ");
             return "上茶：" + tf;
 
         });
-        SmallTool.printTimeAndThread(f3.join());
+        ThreadUtil.printTimeAndThread(f3.join());
     }
 }

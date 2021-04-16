@@ -1,9 +1,8 @@
 package com.xschen.juc.future;
 
-import com.xschen.utils.SmallTool;
+import com.xschen.utils.ThreadUtil;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -36,14 +35,14 @@ public class FireWaterMakeTea {
 
         @Override
         public String call() throws Exception {
-            SmallTool.printTimeAndThread("洗水壶");
-            SmallTool.sleepMillis(100);
-            SmallTool.printTimeAndThread("烧开水");
-            SmallTool.sleepMillis(1500);
+            ThreadUtil.printTimeAndThread("洗水壶");
+            ThreadUtil.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("烧开水");
+            ThreadUtil.sleepMillis(1500);
             String teaName = futureTask.get();
-            SmallTool.printTimeAndThread(String.format("拿到茶叶： %s", teaName));
-            SmallTool.printTimeAndThread("上茶: " + teaName);
-            SmallTool.sleepMillis(100);
+            ThreadUtil.printTimeAndThread(String.format("拿到茶叶： %s", teaName));
+            ThreadUtil.printTimeAndThread("上茶: " + teaName);
+            ThreadUtil.sleepMillis(100);
             return "上茶: " + teaName;
         }
     }
@@ -54,12 +53,12 @@ public class FireWaterMakeTea {
     static class Task2 implements Callable<String> {
         @Override
         public String call() throws Exception {
-            SmallTool.printTimeAndThread("洗茶壶");
-            SmallTool.sleepMillis(100);
-            SmallTool.printTimeAndThread("洗茶杯");
-            SmallTool.sleepMillis(200);
-            SmallTool.printTimeAndThread("拿茶叶");
-            SmallTool.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("洗茶壶");
+            ThreadUtil.sleepMillis(100);
+            ThreadUtil.printTimeAndThread("洗茶杯");
+            ThreadUtil.sleepMillis(200);
+            ThreadUtil.printTimeAndThread("拿茶叶");
+            ThreadUtil.sleepMillis(100);
             return "龙井";
         }
     }
