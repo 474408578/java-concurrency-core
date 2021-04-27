@@ -23,6 +23,10 @@ public class ThreadPoolBuilder {
         return new CachedThreadPoolBuilder();
     }
 
+    public static ScheduledThreadPoolBuilder scheduledPool() {
+        return new ScheduledThreadPoolBuilder();
+    }
+
     /**
      * Queue默认为无限长的LinkedBlockingQueue, 但建议设置queueSize换成有界的队列.
      */
@@ -78,7 +82,7 @@ public class ThreadPoolBuilder {
 
         /**
          * 与 ThreadFactory 互斥，优先使用 threadFactory
-         * 是否守护线程，默认为Null， 不进行设置，即使用jdk的默认值.
+         * 是否守护线程，默认为 false，即使用jdk的默认值.
          * @param daemon
          * @return
          */
@@ -161,7 +165,8 @@ public class ThreadPoolBuilder {
         }
 
         /**
-         * 与 ThreadFactory 互斥，优先使用 threadFactory
+         * 是否为守护线程，不进行设置时，使用 jdk 的默认值，即 false
+         * @see Thread
          * @param daemon
          * @return
          */
@@ -185,6 +190,43 @@ public class ThreadPoolBuilder {
                     new SynchronousQueue<>(), threadFactory, rejectedExecutionHandler);
         }
     }
+
+
+    /**
+     * @see ScheduledThreadPoolExecutor
+     */
+    public static class ScheduledThreadPoolBuilder {
+        private int poolSize = 1;
+        private ThreadFactory threadFactory;
+        private String threadNamePrefix;
+
+        public ScheduledThreadPoolBuilder setPoolSize(int poolSize) {
+            this.poolSize = poolSize;
+            return this;
+        }
+
+        /**
+         * 与 threadNamePrefix 互斥，优先使用 threadFactory
+         * @param threadFactory
+         * @return
+         */
+        public ScheduledThreadPoolBuilder setThreadFactory(ThreadFactory threadFactory) {
+            this.threadFactory = threadFactory;
+            return this;
+        }
+
+        public ScheduledThreadPoolBuilder setThreadNamePrefix(String threadNamePrefix) {
+            this.threadNamePrefix = threadNamePrefix;
+            return this;
+        }
+
+        public ScheduledThreadPoolExecutor build() {
+            threadFactory = createThreadFactory(threadFactory, threadNamePrefix, Boolean.TRUE);
+            return new ScheduledThreadPoolExecutor(poolSize, threadFactory);
+        }
+
+    }
+
 
     private static ThreadFactory createThreadFactory(ThreadFactory threadFactory,
                                                      String threadNamePrefix,

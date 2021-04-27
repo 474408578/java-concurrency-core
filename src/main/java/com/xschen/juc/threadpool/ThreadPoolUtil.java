@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadFactory;
 public class ThreadPoolUtil {
 
 
-
     public static ThreadFactory buildThreadFactory(String threadNamePrefix, Boolean daemon) {
         return new ThreadFactoryBuilder()
                 .setNameFormat(threadNamePrefix + "-%d")

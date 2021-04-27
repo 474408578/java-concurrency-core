@@ -8,7 +8,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * 简化的线程池，仅用来说明工作原理
  *
- *
  * @author xschen
  */
 
@@ -54,7 +53,7 @@ public class MyThreadPool {
                     Runnable task = workQueue.take();
                     task.run();
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // 重置interrupte标志位
+                    Thread.currentThread().interrupt(); // 重置 interrupt 标志位
                 }
             }
         }
