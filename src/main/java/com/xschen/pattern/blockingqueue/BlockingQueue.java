@@ -1,5 +1,7 @@
 package com.xschen.pattern.blockingqueue;
 
+import com.xschen.utils.ThreadUtil;
+
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -29,7 +31,7 @@ public class BlockingQueue<T extends Object> {
         this.items = (T[]) new Object[capacity];
         this.count = 0;
         this.notFull = lock.newCondition();
-        notEmpty = lock.newCondition();
+        this.notEmpty = lock.newCondition();
     }
 
     /**
@@ -72,6 +74,54 @@ public class BlockingQueue<T extends Object> {
             return t;
         } finally {
             lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        BlockingQueue<Integer> blockingQueue = new BlockingQueue(10);
+        new Thread(new Producer(blockingQueue), "producer").start();
+        new Thread(new Consumer(blockingQueue), "consumer").start();
+    }
+
+    static class Consumer implements Runnable {
+        private BlockingQueue<Integer> blockingQueue;
+
+        public Consumer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 100; i++) {
+                try {
+                    blockingQueue.dequeue();
+                    System.out.println(Thread.currentThread().getName() + " 消费了 " + i + " 元素");
+                    ThreadUtil.sleepMillis(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    static class Producer implements Runnable {
+        private BlockingQueue<Integer> blockingQueue;
+
+        public Producer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 100; i++) {
+                try {
+                    blockingQueue.enqueue(i);
+                    System.out.println(Thread.currentThread().getName() + " 生产了 " + i + " 元素");
+                    ThreadUtil.sleepMillis(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

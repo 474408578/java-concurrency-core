@@ -4,7 +4,6 @@ import com.xschen.juc.threadpool.ThreadPoolBuilder;
 import com.xschen.utils.ThreadUtil;
 
 import java.util.Random;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
