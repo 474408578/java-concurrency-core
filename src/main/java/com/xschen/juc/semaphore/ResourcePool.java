@@ -1,10 +1,12 @@
 package com.xschen.juc.semaphore;
 
+import com.xschen.juc.threadpool.ThreadPoolBuilder;
+import com.xschen.utils.ThreadUtil;
+
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
+import java.util.concurrent.*;
 
 /**
  * 对象资源池
@@ -31,13 +33,41 @@ public class ResourcePool<T> {
      * @return
      */
     public T get(long timeOut) throws InterruptedException {
-        try {
-            semaphore.acquire();
-            return resources.poll(timeOut, TimeUnit.SECONDS);
-        } finally {
+        semaphore.acquire();
+        return resources.poll(timeOut, TimeUnit.SECONDS);
+
+    }
+
+    public void release(T resource) throws InterruptedException {
+        if (resource != null) {
+            resources.put(resource);
             semaphore.release();
         }
     }
 
+    public static void main(String[] args) {
+        ThreadPoolExecutor executor = ThreadPoolBuilder
+                .cachedPool()
+                .setThreadNamePrefix("resource-thread")
+                .build();
 
+        ResourcePool<Integer> pool = new ResourcePool<>(3,
+                Arrays.asList(0, 1, 2));
+        Random random = new Random();
+        for (int i = 0; i < 30; i++) {
+            executor.execute(() -> {
+                try {
+                    Integer value = pool.get(60);
+                    System.out.println(Thread.currentThread().getName() +  " Value taken: " + value);
+                    ThreadUtil.sleepMillis(random.nextInt(5000));
+                    pool.release(value);
+                    System.out.println(Thread.currentThread().getName() + " Value released: " + value);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        executor.shutdown();
+
+    }
 }

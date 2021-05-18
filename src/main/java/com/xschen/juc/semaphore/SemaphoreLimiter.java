@@ -25,6 +25,11 @@ public class SemaphoreLimiter<T, R> {
         this.semaphore = new Semaphore(size);
     }
 
+    /**
+     * @param function 传入的函数式方法
+     * @return
+     * @throws InterruptedException
+     */
     R exec(Function<T, R> function) throws InterruptedException {
         T t = null;
         try {
@@ -32,12 +37,14 @@ public class SemaphoreLimiter<T, R> {
             t = pool.remove(0);
             return function.apply(t);
         } finally {
+            pool.add(t);
             semaphore.release();
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
         SemaphoreLimiter<Object, String> semaphoreLimiter = new SemaphoreLimiter(10, "worker");
+        // 通过对象池获取 t 之后执行.
         semaphoreLimiter.exec(t -> {
             System.out.println(t);
             return t.toString();
